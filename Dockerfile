@@ -27,10 +27,10 @@ RUN git clone https://github.com/emscripten-core/emsdk.git && \
 
 ENV PATH="/emsdk/upstream/emscripten:/emsdk:/emsdk/upstream/bin:$PATH"
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | BOOTSTRAP_HASKELL_NONINTERACTIVE=1 BOOTSTRAP_HASKELL_MINIMAL=1 bash && \
+RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | BOOTSTRAP_HASKELL_NONINTERACTIVE=1 bash && \
         echo "source /root/.ghcup/env" >> /root/.bashrc
 
-ENV PATH="/root/.ghcup/bin:$PATH"
+ENV PATH="/root/.ghcup/bin:/root/.cabal/bin:$PATH"
 
 RUN ghcup config add-release-channel cross
 RUN emconfigure ghcup install ghc --set javascript-unknown-ghcjs-9.12.1
