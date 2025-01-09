@@ -1,4 +1,5 @@
 #!/bin/bash
 set -ex
 
-cabal build --project-file=cabal-ghcjs.project all
+echo "Build with GHC"
+cabal build all
