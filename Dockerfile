@@ -33,7 +33,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | BOOTSTR
 ENV PATH="/root/.ghcup/bin:$PATH"
 
 RUN ghcup config add-release-channel cross
-RUN emconfigure ghcup install ghc --set javascript-unknown-ghcjs-ghc-9.12.1
+RUN emconfigure ghcup install ghc --set javascript-unknown-ghcjs-9.12.1
 
 RUN emcc --version && \
     ghcup --version && \
