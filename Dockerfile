@@ -35,6 +35,9 @@ ENV PATH="/root/.ghcup/bin:$PATH"
 RUN ghcup config add-release-channel cross
 RUN emconfigure ghcup install ghc --set javascript-unknown-ghcjs-9.12.1
 
+COPY ./.github/workflows/run-tests.sh /usr/local/bin/run-tests.sh
+RUN chmod +x /usr/local/bin/run-tests.sh
+
 RUN emcc --version && \
     ghcup --version && \
     javascript-unknown-ghcjs-ghc --version
