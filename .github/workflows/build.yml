@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - mateusz/add-workflow
   pull_request:
     branches:
       - main
