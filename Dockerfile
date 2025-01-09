@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN git clone https://github.com/emscripten-core/emsdk.git && \
     cd emsdk && \
-    ./emsdk install latest && \
-    ./emsdk activate latest && \
+    ./emsdk install 3.1.74 && \
+    ./emsdk activate 3.1.74 && \
     echo "source /emsdk/emsdk_env.sh" >> /root/.bashrc
 
 ENV PATH="/emsdk/upstream/emscripten:/emsdk:/emsdk/upstream/bin:$PATH"
@@ -37,4 +37,4 @@ RUN emconfigure ghcup install ghc --set javascript-unknown-ghcjs-9.12.1
 
 RUN emcc --version && \
     ghcup --version && \
-    ghc --version
+    javascript-unknown-ghcjs-ghc --version
