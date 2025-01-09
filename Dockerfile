@@ -23,13 +23,16 @@ RUN git clone https://github.com/emscripten-core/emsdk.git && \
     cd emsdk && \
     ./emsdk install latest && \
     ./emsdk activate latest && \
-    source "./emsdk_env.sh"
+    echo "source /emsdk/emsdk_env.sh" >> /root/.bashrc
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | BOOTSTRAP_HASKELL_NONINTERACTIVE=1 BOOTSTRAP_HASKELL_MINIMAL=1 bash
-RUN source "/root/.ghcup/env"
+ENV PATH="/emsdk/upstream/emscripten:/emsdk:/emsdk/upstream/bin:$PATH"
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | BOOTSTRAP_HASKELL_NONINTERACTIVE=1 BOOTSTRAP_HASKELL_MINIMAL=1 bash && \
+        echo "source /root/.ghcup/env" >> /root/.bashrc
+
+ENV PATH="/root/.ghcup/bin:$PATH"
+
 RUN ghcup config add-release-channel cross
-
-
 RUN emconfigure ghcup install ghc --set javascript-unknown-ghcjs-ghc-9.12.1
 
 RUN emcc --version && \
