@@ -23,16 +23,11 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install the latest version of Emscripten
-RUN curl -L https://emscripten.org/emsdk.zip -o emsdk.zip && \
-    unzip emsdk.zip && \
-    rm emsdk.zip && \
+RUN git clone https://github.com/emscripten-core/emsdk.git && \
     cd emsdk && \
     ./emsdk install latest && \
     ./emsdk activate latest && \
-    echo "source /emsdk/emsdk_env.sh" >> /root/.bashrc
-
-# Add Emscripten to PATH
-ENV PATH="/emsdk/upstream/emscripten:/emsdk:/emsdk/upstream/bin:$PATH"
+    source /emsdk/emsdk_env.sh
 
 # Install GHCup
 RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | bash -s -- -y
@@ -41,8 +36,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | bash -s
 ENV PATH="/root/.ghcup/bin:$PATH"
 
 # Install and configure GHCJS
-RUN source /root/.bashrc && \
-    emconfigure ghcup install ghc --set javascript-unknown-ghcjs-ghc-9.12.1
+RUN emconfigure ghcup install ghc --set javascript-unknown-ghcjs-ghc-9.12.1
 
 # Verify installations
 RUN emcc --version && \
