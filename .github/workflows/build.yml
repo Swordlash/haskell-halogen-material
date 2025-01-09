@@ -28,4 +28,4 @@ jobs:
         docker run --rm \
           -v $GITHUB_WORKSPACE:/workspace \
           haskell-halogen-image \
-          bash -c "cd /workspace && ./github/workflows/run-tests.sh"
+          bash -c "cd /workspace && ./.github/workflows/run-tests.sh"
