@@ -28,4 +28,4 @@ jobs:
 
     # Run tests in the Docker container
     - name: Run Tests
-      run: docker run --rm haskell-halogen-image:latest ./run-build.sh
+      run: docker run --rm haskell-halogen-image:latest ./.github/workflows/run-build.sh
