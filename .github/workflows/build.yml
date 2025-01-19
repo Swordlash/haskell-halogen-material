@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+env:
+  EM_VERSION: 3.1.74
+  EM_CACHE_FOLDER: 'emsdk-cache'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,3 +55,35 @@ jobs:
 
     - name: Build
       run: cabal build all
+
+
+  build-js:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Setup cache
+        id: cache-system-libraries
+        uses: actions/cache@v2
+        with:
+          path: ${{env.EM_CACHE_FOLDER}}
+          key: ${{env.EM_VERSION}}-${{ runner.os }}
+
+    - name: Setup EMSDK
+      uses: mymindstorm/setup-emsdk@v14
+      with:
+        version: ${{env.EM_VERSION}}
+        actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build-ci
