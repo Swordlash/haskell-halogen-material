@@ -1,37 +1,49 @@
-name: Docker CI
+name: build
 
 on:
   push:
-    branches:
-      - main
+    branches: [ $default-branch ]
   pull_request:
-    branches:
-      - main
+    branches: [ $default-branch ]
 
 jobs:
-  docker-ci:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+    - uses: haskell-actions/setup@v2
+      with:
+        ghc-version: '9.12.1'
+        cabal-version: '3.14.1.1'
 
-    - name: Build Docker Image
-      run: docker build -t haskell-halogen-image:latest .
-
-    - name: Run Build (JS)
+    - name: Configure the build
       run: |
-        docker run --rm \
-          -v $GITHUB_WORKSPACE:/workspace \
-          haskell-halogen-image \
-          bash -c "cd /workspace && ./.github/workflows/run_build_js.sh"
-    
-    - name: Run Build (native)
-      run: |
-        docker run --rm \
-          -v $GITHUB_WORKSPACE:/workspace \
-          haskell-halogen-image \
-          bash -c "cd /workspace && ./.github/workflows/run_build.sh"
+        cabal configure --enable-tests --enable-benchmarks --disable-documentation
+        cabal build all --dry-run
+
+    - name: Restore cached dependencies
+      uses: actions/cache/restore@v4
+      id: cache
+      env:
+        key: ${{ runner.os }}-ghc-${{ steps.setup.outputs.ghc-version }}-cabal-${{ steps.setup.outputs.cabal-version }}
+      with:
+        path: ${{ steps.setup.outputs.cabal-store }}
+        key: ${{ env.key }}-plan-${{ hashFiles('**/plan.json') }}
+        restore-keys: ${{ env.key }}-
+
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: cabal build all --only-dependencies
+
+    - name: Save cached dependencies
+      uses: actions/cache/save@v4
+      if: steps.cache.outputs.cache-hit != 'true'
+      with:
+        path: ${{ steps.setup.outputs.cabal-store }}
+        key: ${{ steps.cache.outputs.cache-primary-key }}
+
+    - name: Build
+      run: cabal build all
