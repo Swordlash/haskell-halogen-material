@@ -85,7 +85,8 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
-        tree node_modules
+        npx ghc-installer install cabal 3.14.1.1
+        npx ghc-installer install ghc 9.12.1
 
     - name: Builtin cabal update & freeze
       run: |
