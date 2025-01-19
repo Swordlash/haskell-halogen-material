@@ -85,5 +85,18 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Builtin cabal update & freeze
+      run: |
+        npx ghc-installer run cabal update
+        npx ghc-installer run cabal freeze
+
+    - name: Cache cabal dependencies
+      uses: actions/cache@v3
+      with:
+        path: .cabal
+        key: ${{ runner.os }}-cabal-${{ hashFiles('cabal.project.freeze') }}
+        restore-keys: |
+          ${{ runner.os }}-cabal-
+
     - name: Build
       run: npm run build-ci
