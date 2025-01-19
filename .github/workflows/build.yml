@@ -70,11 +70,11 @@ jobs:
         node-version: '20'
 
     - name: Setup cache
-        id: cache-system-libraries
-        uses: actions/cache@v2
-        with:
-          path: ${{env.EM_CACHE_FOLDER}}
-          key: ${{env.EM_VERSION}}-${{ runner.os }}
+      id: cache-system-libraries
+      uses: actions/cache@v2
+      with:
+        path: ${{env.EM_CACHE_FOLDER}}
+        key: ${{env.EM_VERSION}}-${{ runner.os }}
 
     - name: Setup EMSDK
       uses: mymindstorm/setup-emsdk@v14
