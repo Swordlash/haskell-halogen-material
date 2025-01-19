@@ -87,6 +87,7 @@ jobs:
         npm install
         npx ghc-installer install cabal 3.14.1.1
         npx ghc-installer install ghc 9.12.1
+        mkdir -p /home/runner/.cabal/store
 
     - name: Builtin cabal update & freeze
       run: |
@@ -96,7 +97,7 @@ jobs:
     - name: Cache cabal dependencies
       uses: actions/cache@v3
       with:
-        path: ~/.cabal
+        path: /home/runner/.cabal/store
         key: ${{ runner.os }}-cabal-${{ hashFiles('cabal.project.freeze') }}
         restore-keys: |
           ${{ runner.os }}-cabal-
