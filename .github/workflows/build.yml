@@ -85,6 +85,7 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
+        tree node_modules
 
     - name: Builtin cabal update & freeze
       run: |
