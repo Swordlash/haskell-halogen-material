@@ -83,7 +83,8 @@ jobs:
         actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
 
     - name: Install dependencies
-      run: npm install
+      run: |
+        npm install
 
     - name: Builtin cabal update & freeze
       run: |

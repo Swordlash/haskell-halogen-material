@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@haskell-org/haskell-loader": "^0.1.4",
+    "@haskell-org/ghc-installer": "^0.1.3",
     "@swc/core": "^1.10.4",
     "compression-webpack-plugin": "^11.1.0",
     "css-loader": "^7.1.2",
