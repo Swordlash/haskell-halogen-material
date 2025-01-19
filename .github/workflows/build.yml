@@ -74,7 +74,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{env.EM_CACHE_FOLDER}}
-        key: ${{env.EM_VERSION}}-${{ runner.os }}
+        key: emsdk-${{env.EM_VERSION}}-${{ runner.os }}
 
     - name: Setup EMSDK
       uses: mymindstorm/setup-emsdk@v14
@@ -96,7 +96,7 @@ jobs:
     - name: Cache cabal dependencies
       uses: actions/cache@v3
       with:
-        path: .cabal
+        path: ~/.cabal
         key: ${{ runner.os }}-cabal-${{ hashFiles('cabal.project.freeze') }}
         restore-keys: |
           ${{ runner.os }}-cabal-
