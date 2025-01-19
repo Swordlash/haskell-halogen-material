@@ -98,9 +98,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: /home/runner/.cabal/store
-        key: ${{ runner.os }}-cabal-${{ hashFiles('cabal.project.freeze') }}
+        key: ${{ runner.os }}-cabal-store
         restore-keys: |
-          ${{ runner.os }}-cabal-
+          ${{ runner.os }}-cabal-store
 
     - name: Build
       run: npm run build-ci
