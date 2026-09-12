@@ -91,10 +91,8 @@ jobs:
         npx ghc-installer install ghc 9.12.1
         mkdir -p /home/runner/.cabal/store
 
-    - name: Builtin cabal update & freeze
-      run: |
-        npx ghc-installer run cabal update
-        npx ghc-installer run cabal freeze
+    - name: Update Cabal package index
+      run: npx ghc-installer run cabal update
 
     - name: Cache cabal dependencies
       uses: actions/cache@v4
