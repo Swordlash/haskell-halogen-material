@@ -29,8 +29,8 @@ jobs:
 
     - name: Configure the build
       run: |
-        cabal configure --enable-tests --enable-benchmarks --disable-documentation
-        cabal build all --dry-run
+        cabal configure --builddir=dist-newstyle/native --enable-tests --enable-benchmarks --disable-documentation
+        cabal build all --builddir=dist-newstyle/native --dry-run
 
     - name: Restore cached dependencies
       uses: actions/cache/restore@v4
@@ -44,7 +44,7 @@ jobs:
 
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
-      run: cabal build all --only-dependencies
+      run: cabal build all --builddir=dist-newstyle/native --only-dependencies
 
     - name: Save cached dependencies
       uses: actions/cache/save@v4
@@ -54,7 +54,7 @@ jobs:
         key: ${{ steps.cache.outputs.cache-primary-key }}
 
     - name: Build
-      run: cabal build all
+      run: cabal build all --builddir=dist-newstyle/native
 
 
   build-js:
@@ -103,4 +103,29 @@ jobs:
           ${{ runner.os }}-cabal-store
 
     - name: Build
-      run: npm run build-ci
+      run: npm run build-js-ci
+
+  build-wasm:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install GHC WebAssembly toolchain
+      run: |
+        mkdir -p "$RUNNER_TEMP/ghc-wasm-meta"
+        curl --fail --location --retry 5 https://gitlab.haskell.org/haskell-wasm/ghc-wasm-meta/-/archive/358ea50b8496a69da6ce375c0c58bc049dbcb92d/ghc-wasm-meta-358ea50b8496a69da6ce375c0c58bc049dbcb92d.tar.gz | tar xz --strip-components=1 --directory "$RUNNER_TEMP/ghc-wasm-meta"
+        FLAVOUR=9.14 "$RUNNER_TEMP/ghc-wasm-meta/setup.sh"
+        ~/.ghc-wasm/add_to_github_path.sh
+
+    - name: Install JavaScript dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build-wasm
