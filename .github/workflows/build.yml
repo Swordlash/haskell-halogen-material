@@ -67,7 +67,9 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '24'
+        # @haskell-org/ghc-installer still uses JSON import assertions,
+        # which Node 24 no longer accepts.
+        node-version: '20'
 
     - name: Setup cache
       id: cache-system-libraries
