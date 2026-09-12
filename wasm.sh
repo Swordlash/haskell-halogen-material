@@ -4,9 +4,9 @@ set -eu
 cd "$(dirname "$0")"
 . "$HOME/.ghc-wasm/env"
 
-wasm_ghc=$(command -v wasm32-wasi-ghc-9.14.1.20260731)
-wasm_ghc_pkg=$(command -v wasm32-wasi-ghc-pkg-9.14.1.20260731)
-wasm_hsc2hs=$(command -v wasm32-wasi-hsc2hs-9.14.1.20260731)
+wasm_ghc=$(command -v wasm32-wasi-ghc)
+wasm_ghc_pkg=$(command -v wasm32-wasi-ghc-pkg)
+wasm_hsc2hs=$(command -v wasm32-wasi-hsc2hs)
 build_dir=dist-newstyle/wasm
 public_dir=$build_dir/public
 

@@ -30,9 +30,9 @@ case "${1:-}" in
     ;;
   --repl)
     exec cabal repl --project-file=cabal-wasm.project \
-      --with-compiler="$(command -v wasm32-wasi-ghc-9.14.1.20260731)" \
-      --with-hc-pkg="$(command -v wasm32-wasi-ghc-pkg-9.14.1.20260731)" \
-      --with-hsc2hs="$(command -v wasm32-wasi-hsc2hs-9.14.1.20260731)" \
+      --with-compiler="$(command -v wasm32-wasi-ghc)" \
+      --with-hc-pkg="$(command -v wasm32-wasi-ghc-pkg)" \
+      --with-hsc2hs="$(command -v wasm32-wasi-hsc2hs)" \
       --builddir=dist-newstyle/wasm-dev --disable-multi-repl --enable-shared \
       -finteractive exe:halogen-material-app \
       --repl-options="-fghci-browser -fghci-browser-port=${PORT:-8080} -fghci-browser-assets-dir=dist-newstyle/wasm-dev/public"
