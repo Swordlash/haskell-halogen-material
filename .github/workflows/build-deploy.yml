@@ -39,6 +39,7 @@ jobs:
         . ~/.ghc-wasm/env
         ghcup install cabal 3.14.1.1 --set
         ghcup -s "file://$RUNNER_TEMP/ghc-wasm-meta/ghcup-wasm-0.0.9.yaml" install ghc wasm32-wasi-9.14.1.20260731 --set -- $CONFIGURE_ARGS
+        cabal update
         ~/.ghc-wasm/add_to_github_path.sh
 
     - name: Install JavaScript dependencies
